@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "QR Code for Mobile",
+  "short_name": "QR for Mobile",
+  "version": "1.0.0",
+  "description": "把当前标签页地址生成二维码，可配置开发→公网域名映射，方便手机扫码调试本地页面。",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "生成当前页二维码",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_page": "options/options.html",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

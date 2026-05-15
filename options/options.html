@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>QR Code 映射规则</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <h1>域名映射规则</h1>
+      <p class="desc">
+        当浏览器地址匹配某条规则的「源域名」（协议+主机+端口完全相同）时，
+        二维码会替换为对应的「目标域名」，路径与查询参数保持不变。
+      </p>
+      <p class="example">
+        示例：源 <code>http://127.0.0.1:5500</code> → 目标 <code>https://static.tanwenbin0702.dpdns.org</code>
+        <br />
+        <code>http://127.0.0.1:5500/foo?x=1</code> 将变为 <code>https://static.tanwenbin0702.dpdns.org/foo?x=1</code>
+      </p>
+    </header>
+
+    <section>
+      <div class="rules-head">
+        <span class="col-en">启用</span>
+        <span class="col-from">源域名（origin）</span>
+        <span class="col-arrow"></span>
+        <span class="col-to">目标域名（origin）</span>
+        <span class="col-act"></span>
+      </div>
+      <div id="rules-list" class="rules-list"></div>
+
+      <div class="actions">
+        <button id="btn-add" class="btn">+ 新增规则</button>
+        <button id="btn-save" class="btn primary">保存</button>
+        <span id="status" class="status"></span>
+      </div>
+    </section>
+  </div>
+
+  <script src="../shared/mapping.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

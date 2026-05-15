@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>当前页二维码</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="header">
+    <h1 class="title">当前页二维码</h1>
+    <button id="btn-options" class="icon-btn" title="打开映射规则配置" aria-label="设置">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path fill="currentColor" d="M19.14 12.94a7.49 7.49 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.5 7.5 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54a7.5 7.5 0 0 0-1.63.94l-2.39-.96a.5.5 0 0 0-.61.22L2.72 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.49 7.49 0 0 0 0 1.88L2.84 14.5a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .61.22l2.39-.96a7.5 7.5 0 0 0 1.63.94l.36 2.54a.5.5 0 0 0 .5.42h3.84a.5.5 0 0 0 .5-.42l.36-2.54a7.5 7.5 0 0 0 1.63-.94l2.39.96a.5.5 0 0 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64ZM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Z"/>
+      </svg>
+    </button>
+  </header>
+
+  <main>
+    <div id="qrcode" class="qr-box" aria-live="polite"></div>
+
+    <div id="error-box" class="error-box hidden" role="alert"></div>
+
+    <label class="switch-row">
+      <input type="checkbox" id="toggle-mapping" checked />
+      <span>使用域名映射</span>
+    </label>
+
+    <section class="url-block">
+      <div class="url-label">
+        <span id="mapped-label">映射后地址</span>
+        <button id="btn-copy" class="link-btn" type="button">复制</button>
+      </div>
+      <div id="mapped-url" class="url-value mono"></div>
+      <div id="no-rule-tip" class="hint hidden">未配置匹配规则，使用原始地址</div>
+    </section>
+
+    <details class="raw-details">
+      <summary>原始地址</summary>
+      <div id="raw-url" class="url-value mono"></div>
+    </details>
+  </main>
+
+  <div id="toast" class="toast hidden">已复制</div>
+
+  <script src="../lib/qrcode.min.js"></script>
+  <script src="../shared/mapping.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

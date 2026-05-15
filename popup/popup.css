@@ -1,0 +1,157 @@
+/* 弹窗样式：紧凑、信息密度适中 */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  color: #1f2328;
+  background: #ffffff;
+}
+
+body {
+  width: 320px;
+  padding: 12px 14px 14px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #57606a;
+  border-radius: 4px;
+  display: inline-flex;
+}
+
+.icon-btn:hover {
+  background: #f3f4f6;
+  color: #1f2328;
+}
+
+.qr-box {
+  width: 240px;
+  height: 240px;
+  margin: 4px auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafbfc;
+  border: 1px solid #eaeef2;
+  border-radius: 6px;
+}
+
+.qr-box img,
+.qr-box canvas {
+  display: block;
+}
+
+.error-box {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  background: #fff5f5;
+  border: 1px solid #ffd7d9;
+  color: #b3261e;
+  border-radius: 6px;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch-row input { margin: 0; cursor: pointer; }
+
+.url-block {
+  margin-bottom: 8px;
+}
+
+.url-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  color: #57606a;
+}
+
+.url-value {
+  word-break: break-all;
+  background: #f6f8fa;
+  border: 1px solid #eaeef2;
+  border-radius: 4px;
+  padding: 6px 8px;
+  line-height: 1.5;
+  max-height: 84px;
+  overflow-y: auto;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.link-btn {
+  background: transparent;
+  border: none;
+  color: #0969da;
+  cursor: pointer;
+  padding: 0;
+  font-size: 12px;
+}
+
+.link-btn:hover { text-decoration: underline; }
+
+.hint {
+  margin-top: 4px;
+  color: #8a8f98;
+  font-size: 12px;
+}
+
+.raw-details {
+  margin-top: 10px;
+}
+
+.raw-details summary {
+  cursor: pointer;
+  color: #57606a;
+  font-size: 12px;
+  user-select: none;
+  margin-bottom: 4px;
+}
+
+.raw-details summary:hover { color: #1f2328; }
+
+.hidden { display: none !important; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  background: rgba(31, 35, 40, 0.92);
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  pointer-events: none;
+  transition: opacity .18s ease;
+}
