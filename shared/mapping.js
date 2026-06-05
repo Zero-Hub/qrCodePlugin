@@ -5,16 +5,25 @@
 (function () {
   'use strict';
 
+  // 计算 origin = 协议 + // + host。
+  // 不用 URL.origin，因为 file:// 的 origin 是字符串 "null"，无法用于匹配；
+  // 自算后 file 得到 "file://"，http/https 结果与 URL.origin 一致。
+  function originOf(u) {
+    return u.protocol + '//' + u.host;
+  }
+
   // 规范化用户输入为 base（origin + 路径前缀）；非法时返回 null
   // 返回 { origin, path, base } —— path 去掉末尾斜杠（根路径归一化为空串），
   // base = origin + path，丢弃查询与锚点。
   // 仅输入 origin（如 http://127.0.0.1:5500）时 path 为 ''，等价于旧的纯 origin 行为。
+  // 也支持 file:// 本地文件地址（origin 为 "file://"，path 为完整文件路径前缀）。
   function normalizeBase(input) {
     if (!input || typeof input !== 'string') return null;
     try {
       const u = new URL(input.trim());
+      const origin = originOf(u);
       const path = u.pathname.replace(/\/+$/, ''); // 去掉末尾斜杠，'/' → ''
-      return { origin: u.origin, path: path, base: u.origin + path };
+      return { origin: origin, path: path, base: origin + path };
     } catch {
       return null;
     }
@@ -41,11 +50,12 @@
   function applyMapping(originalUrl, mappings) {
     try {
       const u = new URL(originalUrl);
+      const uOrigin = originOf(u);
       const list = Array.isArray(mappings) ? mappings : [];
       // 预解析 + 过滤无效/未启用，并按前缀具体度降序排序（不改动原数组）
       const candidates = list
         .map(r => ({ rule: r, from: r && r.enabled ? normalizeBase(r.from) : null }))
-        .filter(c => c.from && c.from.origin === u.origin && pathUnder(u.pathname, c.from.path))
+        .filter(c => c.from && c.from.origin === uOrigin && pathUnder(u.pathname, c.from.path))
         .sort((a, b) => b.from.path.length - a.from.path.length);
 
       const c = candidates[0];

@@ -28,9 +28,15 @@
     return tab && tab.url ? tab.url : '';
   }
 
-  function isQrAble(url) {
-    // 只对 http(s) 页面生成；chrome:// edge:// about: file: 等都跳过
+  // http(s) 地址可直接生成可用二维码
+  function isHttp(url) {
     return /^https?:\/\//i.test(url);
+  }
+
+  // 受支持的页面：http(s) 或本地文件 file://（file:// 需经映射变成 http(s) 才有意义）。
+  // chrome:// edge:// about: 等内部协议仍不支持。
+  function isSupported(url) {
+    return isHttp(url) || /^file:\/\//i.test(url);
   }
 
   function showError(msg) {
@@ -67,6 +73,17 @@
     els.rawUrl.textContent = state.rawUrl;
     els.mappedUrl.textContent = result.url;
 
+    // 最终地址若不是 http(s)（如本地 file:// 未命中映射），二维码扫了也没用，给提示
+    if (!isHttp(result.url)) {
+      els.mappedLbl.textContent = '当前地址';
+      els.noRuleTip.classList.add('hidden');
+      showError('本地文件地址需要先配置「域名映射规则」（源填 file://… 前缀），映射成公网地址后才能生成可扫码的二维码。');
+      return;
+    }
+
+    // 有可用结果：清掉之前可能显示的提示
+    els.error.classList.add('hidden');
+
     if (!useMapping) {
       els.mappedLbl.textContent = '当前二维码内容（已临时禁用映射）';
       els.noRuleTip.classList.add('hidden');
@@ -94,8 +111,8 @@
       return;
     }
 
-    if (!isQrAble(state.rawUrl)) {
-      showError('当前页面不支持生成二维码（仅支持 http/https 网址）。');
+    if (!isSupported(state.rawUrl)) {
+      showError('当前页面不支持生成二维码（仅支持 http/https 网址或本地 file:// 文件）。');
       els.rawUrl.textContent = state.rawUrl;
       return;
     }
@@ -105,7 +122,7 @@
   }
 
   els.toggle.addEventListener('change', () => {
-    if (!isQrAble(state.rawUrl)) return;
+    if (!isSupported(state.rawUrl)) return;
     render();
   });
 
