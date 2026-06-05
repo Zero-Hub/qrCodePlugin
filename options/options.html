@@ -10,22 +10,26 @@
     <header class="page-header">
       <h1>域名映射规则</h1>
       <p class="desc">
-        当浏览器地址匹配某条规则的「源域名」（协议+主机+端口完全相同）时，
-        二维码会替换为对应的「目标域名」，路径与查询参数保持不变。
+        当浏览器地址匹配某条规则的「源地址」时，二维码会替换为对应的「目标地址」。
+        源地址可只写域名（协议+主机+端口），也可带路径前缀；命中后会把源前缀替换为目标地址，
+        剩余路径、查询参数与锚点保持不变。多条规则命中时，路径前缀更具体的优先。
       </p>
       <p class="example">
-        示例：源 <code>http://127.0.0.1:5500</code> → 目标 <code>https://xxxxx.dpdns.org</code>
+        示例 1（仅域名）：源 <code>http://127.0.0.1:5500</code> → 目标 <code>https://xxxxx.dpdns.org</code>，
+        则 <code>http://127.0.0.1:5500/foo?x=1</code> 变为 <code>https://xxxxx.dpdns.org/foo?x=1</code>
         <br />
-        <code>http://127.0.0.1:5500/foo?x=1</code> 将变为 <code>https://xxxxx.dpdns.org/foo?x=1</code>
+        示例 2（带路径前缀）：源 <code>http://localhost:63342/static-design</code> → 目标 <code>https://static.example.org</code>，
+        则 <code>http://localhost:63342/static-design/recruitment/resume-mobile.html</code>
+        变为 <code>https://static.example.org/recruitment/resume-mobile.html</code>
       </p>
     </header>
 
     <section>
       <div class="rules-head">
         <span class="col-en">启用</span>
-        <span class="col-from">源域名（origin）</span>
+        <span class="col-from">源地址（域名，可带路径前缀）</span>
         <span class="col-arrow"></span>
-        <span class="col-to">目标域名（origin）</span>
+        <span class="col-to">目标地址（域名，可带路径前缀）</span>
         <span class="col-act"></span>
       </div>
       <div id="rules-list" class="rules-list"></div>

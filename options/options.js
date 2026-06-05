@@ -36,7 +36,7 @@
       row.dataset.id = rule.id;
       row.innerHTML = `
         <span class="col-en"><input type="checkbox" data-field="enabled" ${rule.enabled ? 'checked' : ''} /></span>
-        <input type="text" data-field="from" placeholder="http://127.0.0.1:5500" />
+        <input type="text" data-field="from" placeholder="http://127.0.0.1:5500/static-design" />
         <span class="col-arrow">→</span>
         <input type="text" data-field="to"   placeholder="https://static.example.com" />
         <span class="col-act"><button type="button" class="btn-del" data-idx="${idx}">删除</button></span>
@@ -70,8 +70,9 @@
   }
 
   // 校验 + 规范化；返回 { ok, message, normalized? }
+  // 源/目标按 base（origin + 路径前缀）保存，支持带路径前缀的映射。
   function validateAndNormalize() {
-    const seenFrom = new Map(); // origin -> idx
+    const seenFrom = new Map(); // base -> idx
     const out = [];
 
     for (let i = 0; i < draft.length; i++) {
@@ -79,31 +80,31 @@
       // 允许整行空白：跳过保存（视作未填写）
       if (!r.from && !r.to) continue;
 
-      const fromOrigin = QRMapping.normalizeOrigin(r.from);
-      const toOrigin   = QRMapping.normalizeOrigin(r.to);
+      const fromBase = QRMapping.normalizeBase(r.from);
+      const toBase   = QRMapping.normalizeBase(r.to);
 
-      if (!fromOrigin) {
+      if (!fromBase) {
         markRowInvalid(i);
-        return { ok: false, message: `第 ${i + 1} 行「源域名」不是合法 URL（示例：http://127.0.0.1:5500）` };
+        return { ok: false, message: `第 ${i + 1} 行「源地址」不是合法 URL（示例：http://127.0.0.1:5500 或 http://127.0.0.1:5500/static-design）` };
       }
-      if (!toOrigin) {
+      if (!toBase) {
         markRowInvalid(i);
-        return { ok: false, message: `第 ${i + 1} 行「目标域名」不是合法 URL（示例：https://static.example.com）` };
+        return { ok: false, message: `第 ${i + 1} 行「目标地址」不是合法 URL（示例：https://static.example.com）` };
       }
-      if (fromOrigin === toOrigin) {
+      if (fromBase.base === toBase.base) {
         markRowInvalid(i);
         return { ok: false, message: `第 ${i + 1} 行源与目标相同，无意义` };
       }
-      if (seenFrom.has(fromOrigin)) {
+      if (seenFrom.has(fromBase.base)) {
         markRowInvalid(i);
-        return { ok: false, message: `第 ${i + 1} 行源域名 ${fromOrigin} 与第 ${seenFrom.get(fromOrigin) + 1} 行重复` };
+        return { ok: false, message: `第 ${i + 1} 行源地址 ${fromBase.base} 与第 ${seenFrom.get(fromBase.base) + 1} 行重复` };
       }
-      seenFrom.set(fromOrigin, i);
+      seenFrom.set(fromBase.base, i);
 
       out.push({
         id: r.id || QRMapping.newId(),
-        from: fromOrigin,
-        to: toOrigin,
+        from: fromBase.base,
+        to: toBase.base,
         enabled: r.enabled !== false
       });
     }
